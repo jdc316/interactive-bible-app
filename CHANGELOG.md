@@ -7,7 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
-- New features or functionality.
+- [#3](https://github.com/jdc316/interactive-bible-app/issues/3): Added backend boilerplate
+- [#8](https://github.com/jdc316/interactive-bible-app/issues/8): Added frontend boilerplate
 
 ### Changed
 - Updates to existing functionality.
