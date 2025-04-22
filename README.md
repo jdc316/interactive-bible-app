@@ -68,7 +68,7 @@ To run the application locally:
 3. Open your browser and navigate to `http://localhost:3000` (or the specified port).
 
 ## Technologies Used
-- **Front-end:** React, Ionic Framework
+- **Front-end:** Angular, Ionic Framework
 - **Back-end:** .NET Core
 - **Database:** SQL Server
 - **Other Tools:** Node.js, npm, Ionic CLI
