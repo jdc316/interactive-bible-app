@@ -1,7 +1,0 @@
-{
-  "name": "interactive-bible-app",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "angular"
-}
