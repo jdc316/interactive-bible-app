@@ -31,6 +31,7 @@ Follow these instructions to set up the project on your local machine for develo
 ### Prerequisites
 Ensure you have the following installed:
 - [Node.js](https://nodejs.org/) (for the front-end)
+- [Angular CLI](https://angular.dev/tools/cli/setup-local#example-1) (for the front-end)
 - [.NET SDK](https://dotnet.microsoft.com/) (for the back-end)
 - [Ionic CLI](https://ionicframework.com/docs/cli) (for mobile development)
 
