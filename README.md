@@ -45,6 +45,8 @@ Ensure you have the following installed:
 2. Install dependencies for the front-end:
    ```bash
    cd front-end
+   npm install -g @angular/cli
+   npm install -g @ionic/cli
    npm install
    ```
 
