@@ -54,6 +54,8 @@ Ensure you have the following installed:
 
    ```bash
    cd front-end
+   npm install -g @angular/cli
+   npm install -g @ionic/cli
    npm install
    code --install-extension interactive-bible-app-0.0.1.vsix
    ```
