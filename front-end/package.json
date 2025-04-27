@@ -1,8 +1,24 @@
 {
   "name": "interactive-bible-app",
   "version": "0.0.1",
-  "author": "Ionic Framework",
-  "homepage": "https://ionicframework.com/",
+  "description": "An interactive experience where users can explore the Bible in a hands-on way, search for verses, and save their favorite passages.",
+  "homepage": "https://github.com/jdc316/interactive-bible-app#readme",
+  "keywords": [
+    "bible",
+    "interactive",
+    "exploration",
+    "search",
+    "favorite"
+  ],
+  "bugs": {
+    "url": "https://github.com/jdc316/interactive-bible-app/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jdc316/interactive-bible-app.git"
+  },
+  "license": "MIT",
+  "author": "Joshua Cunningham",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -63,5 +79,11 @@
     "karma-jasmine-html-reporter": "~2.1.0",
     "typescript": "~5.6.3"
   },
-  "description": "An Ionic project"
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0",
+    "yarn": ">=1.0.0",
+    "pnpm": ">=6.0.0",
+    "vscode": "^1.74.0"
+  }
 }
