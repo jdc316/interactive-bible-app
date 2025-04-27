@@ -55,7 +55,13 @@ Ensure you have the following installed:
    ```bash
    cd front-end
    npm install
+   code --install-extension interactive-bible-app-0.0.1.vsix
    ```
+   * If you get an error on the code command, you need to set the PATH variable in your environment. To do this:
+      * [Windows] Open the Command Palette via Ctrl+Shift+P and type `shell command` to find the Shell Command:
+      * [macOS] Open the Command Palette via ⌘⇧P and type `shell command` to find the Shell Command:
+      ![shell command](./docs/images/shell_command.png)
+
 
 3. Restore dependencies for the back-end:
 
