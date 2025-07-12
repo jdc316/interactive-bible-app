@@ -430,7 +430,7 @@ These are low-to-mid fidelity but detailed, focusing on structure, interactions,
 graph TD
     subgraph Header
         Logo[App Logo] --> Search[Search Input + Button]
-        Search --> Translation[Translation Dropdown (e.g., ESV/KJV)]
+        Search --> Translation["Translation Dropdown (e.g., ESV/KJV)"]
     end
     subgraph Sidebar_Left
         Filters[Filters Section] --> BookFilter[Book Dropdown]
@@ -438,14 +438,14 @@ graph TD
         Stats[Stats Section] --> HubList[Most Referenced Verses List]
     end
     subgraph Main_Content
-        Graph[3D Graph Canvas] --> Nodes[Nodes (Verses, Color-Coded)]
-        Graph --> Edges[Edges (Styled by Type)]
-        Graph --> Controls[Zoom/Pan/Drag Controls (Bottom-Right Icons)]
+        Graph[3D Graph Canvas] --> Nodes["Nodes (Verses, Color-Coded)"]
+        Graph --> Edges["Edges (Styled by Type)"]
+        Graph --> Controls["Zoom/Pan/Drag Controls (Bottom-Right Icons)"]
         Graph --> Hover[Hover Tooltip: Verse Text]
     end
     subgraph Footer
-        Attr[Attribution: ESV © Crossway] --> Export[Export Button (Image/PDF)]
-        Attr --> Settings[Settings Button (e.g., High-Contrast Mode)]
+        Attr[Attribution: ESV © Crossway] --> Export["Export Button (Image/PDF)"]
+        Attr --> Settings["Settings Button (e.g., High-Contrast Mode)"]
     end
     Header --> Sidebar_Left
     Header --> Main_Content
@@ -484,9 +484,9 @@ graph TD
 ```mermaid
 graph TD
     subgraph Verse_Detail_Sidebar [Right Sidebar on Click]
-        Verse_Title[Verse Reference (e.g., John 3:16)] --> Text[Full Verse Text]
+        Verse_Title["Verse Reference (e.g., John 3:16)"] --> Text[Full Verse Text]
         Text --> Context[Context: Previous/Next Verses]
-        Context --> Related[Related Connections List (Clickable Links)]
+        Context --> Related["Related Connections List (Clickable Links)"]
         Related --> Translate[Translation Switch Button]
         Actions[Actions] --> Copy[Copy Text Button]
         Actions --> Share[Share Link Button]
@@ -533,7 +533,7 @@ graph TD
     end
     Header_With_Results --> Sidebar_Filters
     Sidebar_Filters --> Updated_Graph
-    Updated_Graph --> No_Results [If Empty]
+    Updated_Graph -->|If Empty| No_Results
 ```
 
 #### 4. Statistics and Insights Sidebar
@@ -550,7 +550,7 @@ graph TD
         Actions_S[Actions] --> Refresh[Refresh Stats Button]
         Actions_S --> Export_S[Export Stats as CSV]
     end
-    Main_Graph_View[From Main View] --> Stats_Sidebar [Toggle Visibility]
+    Main_Graph_View[From Main View] -->|Toggle Visibility| Stats_Sidebar
 ```
 
 #### 5. User Authentication and Saved Views Screen
@@ -564,7 +564,7 @@ graph TD
         Email[Email Input] --> Password[Password Input]
         Password --> Login[Login Button]
         Login --> Register[Or Register Link]
-        Social[Social Login Options (e.g., Google)]
+        Social["Social Login Options (e.g., Google)"]
         Forgot[Forgot Password Link]
     end
     App_Header[From Settings] --> Auth_Modal
@@ -589,7 +589,7 @@ graph TD
 ```mermaid
 graph TD
     subgraph Export_Modal
-        Preview[Graph Preview Thumbnail] --> Format[Format Dropdown (Image/PDF)]
+        Preview[Graph Preview Thumbnail] --> Format["Format Dropdown (Image/PDF)"]
         Format --> Options[Options: Include Stats? Checkbox]
         Options --> Download[Download Button]
         Download --> Cancel[Cancel Button]
