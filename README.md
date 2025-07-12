@@ -19,35 +19,3 @@ Interactive visualization of Bible cross-references using ESV, Neo4j graph, Reac
 
 ## License
 Non-commercial; ESV license compliance enforced.
-
-interactive-bible-app/
-├── backend/
-│   ├── package.json  (from Step 1)
-│   ├── server.js  (from Step 8, updated)
-│   ├── services/
-│   │   └── esvService.js  (Step 2)
-│   ├── scripts/
-│   │   ├── parseCrossRefs.js  (Step 3)
-│   │   ├── validateCrossRefs.js  (Step 5)
-│   │   ├── parseBibleStructure.js  (Step 4)
-│   │   ├── ingestData.js  (Step 7, updated)
-│   │   ├── analysis.js  (Step 12)
-│   │   └── optimize.js  (Step 9)
-│   ├── graphql/
-│   │   └── schema.js  (Step 8)
-│   ├── db/
-│   │   ├── schema.cypher  (Step 6)
-│   │   └── init.js  (Step 6)
-│   └── .env.example  (NEO4J_URI=bolt://localhost:7687, etc.)
-├── frontend/
-│   ├── package.json  (Step 1)
-│   ├── src/
-│   │   ├── App.js  (Step 14)
-│   │   ├── components/
-│   │   │   └── Graph.js  (Step 14)
-│   │   └── index.js  (standard React)
-│   └── public/
-│       └── index.html  (standard)
-├── docker-compose.yml  (Step 1)
-├── README.md  (below)
-└── .gitignore  (standard Node/React)
