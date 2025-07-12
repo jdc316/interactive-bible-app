@@ -1,0 +1,24 @@
+# Node modules
+node_modules
+
+# Environment variables
+.env
+
+# Logs
+logs
+*.log
+
+# Build outputs
+build
+dist
+
+# Temp files
+.tmp
+temp
+
+# Docker volumes (if any)
+neo4j/data
+
+# Misc
+.DS_Store
+Thumbs.db

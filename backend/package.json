@@ -1,0 +1,29 @@
+{
+  "name": "bible-app-backend",
+  "version": "0.0.1",
+  "description": "Backend for Interactive Bible App",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "jest",
+    "ingest": "node scripts/ingestData.js",
+    "analyze": "node scripts/analysis.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "neo4j-driver": "^5.10.0",
+    "apollo-server-express": "^3.12.0",
+    "graphql": "^16.7.1",
+    "axios": "^1.4.0",
+    "dotenv": "^16.3.1",
+    "csv-parser": "^3.0.0",
+    "redis": "^4.6.7",
+    "express-rate-limit": "^6.7.0",
+    "neo4j-graphql-js": "^2.4.3"
+  },
+  "devDependencies": {
+    "jest": "^29.5.0"
+  },
+  "author": "Joshua Cunningham",
+  "license": "MIT"
+}
