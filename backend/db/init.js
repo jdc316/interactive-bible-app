@@ -1,5 +1,6 @@
 const neo4j = require('neo4j-driver');
 const fs = require('fs');
+const path = require('path'); // Add path module for cross-platform paths
 require('dotenv').config();
 
 const driver = neo4j.driver(process.env.NEO4J_URI, neo4j.auth.basic(process.env.NEO4J_USER, process.env.NEO4J_PASSWORD));
@@ -7,7 +8,9 @@ const driver = neo4j.driver(process.env.NEO4J_URI, neo4j.auth.basic(process.env.
 async function initSchema() {
   const session = driver.session();
   try {
-    const schemaCommands = fs.readFileSync('schema.cypher', 'utf-8').split(';').filter(cmd => cmd.trim());
+    // Use path.join for correct directory resolution
+    const schemaPath = path.join(__dirname, 'schema.cypher');
+    const schemaCommands = fs.readFileSync(schemaPath, 'utf-8').split(';').filter(cmd => cmd.trim());
     for (const cmd of schemaCommands) {
       await session.run(cmd);
     }
