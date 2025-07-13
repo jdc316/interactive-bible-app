@@ -1,6 +1,6 @@
 const express = require('express');
 const { ApolloServer } = require('apollo-server-express');
-const { typeDefs, neoSchema } = require('./graphql/schema');
+const neo4jGraphQL = require('./graphql/schema');  // Now a function
 const esvService = require('./services/esvService');
 const neo4j = require('neo4j-driver');
 const rateLimit = require('express-rate-limit');
@@ -31,13 +31,14 @@ app.get('/api/v1/verses', async (req, res) => {
   if (!reference) return res.status(400).json({ error: 'Reference is required' });
 
   const cacheKey = `verse:${reference}:${translation}`;
+  let session;
   try {
     let cached = await redisClient.get(cacheKey);
     if (cached) {
       return res.json(JSON.parse(cached));
     }
 
-    const session = driver.session();
+    session = driver.session();
     const result = await session.run(
       `MATCH (v:Verse {reference: $reference}) RETURN v`,
       { reference }
@@ -58,7 +59,7 @@ app.get('/api/v1/verses', async (req, res) => {
     console.error('Error fetching verse:', error);
     res.status(500).json({ error: 'Internal server error' });
   } finally {
-    if (session) session.close();
+    if (session) await session.close();
   }
 });
 
@@ -67,8 +68,9 @@ app.get('/api/v1/connections', async (req, res) => {
   const { verse_id, depth = 2, type } = req.query;
   if (!verse_id) return res.status(400).json({ error: 'verse_id is required' });
 
+  let session;
   try {
-    const session = driver.session();
+    session = driver.session();
     let query = `MATCH (v:Verse {id: $verse_id})-[r:REFERENCES*1..$depth]-(connected:Verse) RETURN DISTINCT {nodes: collect(v) + collect(connected), edges: collect(r)} AS graph LIMIT 5000`;
     if (type) query = query.replace('REFERENCES', `REFERENCES {type: $type}`);
 
@@ -79,7 +81,7 @@ app.get('/api/v1/connections', async (req, res) => {
     console.error('Error fetching connections:', error);
     res.status(500).json({ error: 'Internal server error' });
   } finally {
-    if (session) session.close();
+    if (session) await session.close();
   }
 });
 
@@ -93,8 +95,9 @@ app.get('/api/v1/subgraphs', async (req, res) => {
     return res.status(400).json({ error: 'Invalid filters JSON' });
   }
 
+  let session;
   try {
-    const session = driver.session();
+    session = driver.session();
     let query = `MATCH (v:Verse) WHERE true `;
     const params = {};
     if (parsedFilters.book) {
@@ -116,7 +119,7 @@ app.get('/api/v1/subgraphs', async (req, res) => {
     console.error('Error fetching subgraph:', error);
     res.status(500).json({ error: 'Internal server error' });
   } finally {
-    if (session) session.close();
+    if (session) await session.close();
   }
 });
 
@@ -124,8 +127,9 @@ app.get('/api/v1/subgraphs', async (req, res) => {
 app.get('/api/v1/analysis', async (req, res) => {
   const { metric = 'centrality' } = req.query;
 
+  let session;
   try {
-    const session = driver.session();
+    session = driver.session();
     // Assuming precomputed centrality
     const result = await session.run(
       `MATCH (v:Verse) RETURN v.reference AS verse, v.metadata.centrality_score AS score ORDER BY score DESC LIMIT 10`
@@ -136,29 +140,39 @@ app.get('/api/v1/analysis', async (req, res) => {
     console.error('Error in analysis:', error);
     res.status(500).json({ error: 'Internal server error' });
   } finally {
-    if (session) session.close();
+    if (session) await session.close();
   }
 });
 
 // GraphQL Integration
 (async () => {
-  const schema = await neoSchema.getSchema();
-  const apolloServer = new ApolloServer({
-    schema,
-    context: { driver, esvService }
-  });
-  await apolloServer.start();
-  apolloServer.applyMiddleware({ app, path: '/graphql' });
+  try {
+    const neo4jGraphQL = neoSchema(driver);  // Pass driver here
+    const schema = await neo4jGraphQL.getSchema();
+    const apolloServer = new ApolloServer({
+      schema,
+      context: { driver, esvService }
+    });
+    await apolloServer.start();
+    apolloServer.applyMiddleware({ app, path: '/graphql' });
 
-  app.listen(3001, () => {
-    console.log('Server running on http://localhost:3001');
-    console.log('GraphQL at http://localhost:3001/graphql');
-  });
+    app.listen(3001, () => {
+      console.log('Server running on http://localhost:3001');
+      console.log('GraphQL at http://localhost:3001/graphql');
+    });
+  } catch (error) {
+    console.error('Error starting GraphQL server:', error);
+    process.exit(1);  // Exit with error if GraphQL fails
+  }
 })();
 
 // Graceful shutdown
 process.on('SIGTERM', async () => {
-  await driver.close();
-  await redisClient.quit();
+  try {
+    await driver.close();
+    await redisClient.quit();
+  } catch (error) {
+    console.error('Shutdown error:', error);
+  }
   process.exit(0);
 });

@@ -15,6 +15,4 @@ const typeDefs = gql`
   }
 `;
 
-const neo4jGraphQL = new Neo4jGraphQL({ typeDefs, driver });
-
-module.exports = { typeDefs, neoSchema: neo4jGraphQL };
+module.exports = (driver) => new Neo4jGraphQL({ typeDefs, driver });
