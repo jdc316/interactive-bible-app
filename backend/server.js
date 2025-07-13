@@ -1,6 +1,6 @@
 const express = require('express');
 const { ApolloServer } = require('apollo-server-express');
-const { neoSchema } = require('./graphql/schema');
+const { typeDefs, neoSchema } = require('./graphql/schema');
 const esvService = require('./services/esvService');
 const neo4j = require('neo4j-driver');
 const rateLimit = require('express-rate-limit');
@@ -141,12 +141,12 @@ app.get('/api/v1/analysis', async (req, res) => {
 });
 
 // GraphQL Integration
-const apolloServer = new ApolloServer({
-  schema: await neoSchema.getSchema(),
-  context: { driver, esvService }
-});
-
 (async () => {
+  const schema = await neoSchema.getSchema();
+  const apolloServer = new ApolloServer({
+    schema,
+    context: { driver, esvService }
+  });
   await apolloServer.start();
   apolloServer.applyMiddleware({ app, path: '/graphql' });
 
