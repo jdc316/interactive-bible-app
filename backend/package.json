@@ -19,7 +19,7 @@
     "csv-parser": "^3.0.0",
     "redis": "^4.6.7",
     "express-rate-limit": "^6.7.0",
-    "neo4j-graphql-js": "^2.4.3"
+    "@neo4j/graphql": "^5.0.0"  
   },
   "devDependencies": {
     "jest": "^29.5.0"
