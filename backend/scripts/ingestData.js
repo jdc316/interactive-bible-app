@@ -1,5 +1,6 @@
 const neo4j = require('neo4j-driver');
 const fs = require('fs');
+const path = require('path');
 const axios = require('axios');
 require('dotenv').config();
 
@@ -19,19 +20,25 @@ async function downloadCrossRefs() {
 }
 
 async function ingestBibleStructure() {
-  const structure = JSON.parse(fs.readFileSync('bible_structure.json'));
+  const structure = JSON.parse(fs.readFileSync(path.join(__dirname, '../bible_structure.json')));
   const session = driver.session();
   try {
     for (const book of structure.books) {
       const bookRes = await session.run(
-        `CREATE (b:Book {id: apoc.uuid.generate(), name: $name, testament: $testament, order: $order}) RETURN b.id AS id`,
+        `MERGE (b:Book {name: $name})
+         ON CREATE SET b.id = randomUUID(), b.testament = $testament, b.order = $order
+         RETURN b.id AS id`,
         book
       );
       const bookId = bookRes.records[0].get('id');
 
       for (const chapter of book.chapters) {
         const chRes = await session.run(
-          `CREATE (c:Chapter {id: apoc.uuid.generate(), number: $number, bookId: $bookId}) RETURN c.id AS id`,
+          `MATCH (b:Book {id: $bookId})
+           MERGE (c:Chapter {number: $number, bookName: b.name})
+           ON CREATE SET c.id = randomUUID()
+           MERGE (b)-[:HAS_CHAPTER]->(c)
+           RETURN c.id AS id`,
           { number: chapter.number, bookId }
         );
         const chapterId = chRes.records[0].get('id');
@@ -40,10 +47,11 @@ async function ingestBibleStructure() {
         for (const batch of verseBatches) {
           await session.run(
             `UNWIND $verses AS v
-             CREATE (verse:Verse {id: apoc.uuid.generate(), reference: v.reference, chapterId: $chapterId, number: v.number, texts: {}, metadata: {}})
+             MERGE (verse:Verse {reference: v.reference})
+             ON CREATE SET verse.id = randomUUID(), verse.number = v.number
              WITH verse, $chapterId AS chId
              MATCH (c:Chapter {id: chId})
-             CREATE (c)-[:HAS_VERSE]->(verse)`,
+             MERGE (c)-[:HAS_VERSE]->(verse)`,
             { verses: batch.map(v => ({ reference: v.reference, number: parseInt(v.reference.split('.')[2]) })), chapterId }
           );
         }
@@ -55,11 +63,14 @@ async function ingestBibleStructure() {
 }
 
 async function ingestCrossRefs() {
-  const refs = JSON.parse(fs.readFileSync('validated_cross_refs.json'));
+  const refs = JSON.parse(fs.readFileSync(path.join(__dirname, '../validated_cross_refs.json')));
   const session = driver.session();
   try {
     const refBatches = chunk(refs, 1000);
-    let maxVotes = Math.max(...refs.map(r => r.votes));  // Normalize
+    let maxVotes = 1;
+    for (const r of refs) {
+      if (typeof r.votes === 'number' && r.votes > maxVotes) maxVotes = r.votes;
+    }
     for (const batch of refBatches) {
       await session.run(
         `UNWIND $refs AS r

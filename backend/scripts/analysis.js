@@ -13,7 +13,7 @@ async function runAnalysis() {
     );
 
     await session.run(
-      `MATCH (v:Verse) SET v.metadata.centrality_score = v.centrality RETURN count(v)`
+      `MATCH (v:Verse) SET v.centrality_score = v.centrality RETURN count(v)`
     );
     console.log('Analysis complete.');
   } finally {

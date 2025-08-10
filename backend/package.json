@@ -10,16 +10,17 @@
     "analyze": "node scripts/analysis.js"
   },
   "dependencies": {
-    "express": "^4.18.2",
-    "neo4j-driver": "^5.10.0",
+    "@neo4j/graphql": "^5.0.0",
     "apollo-server-express": "^3.12.0",
-    "graphql": "^16.7.1",
     "axios": "^1.4.0",
-    "dotenv": "^16.3.1",
+    "cors": "^2.8.5",
     "csv-parser": "^3.0.0",
-    "redis": "^4.6.7",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
     "express-rate-limit": "^6.7.0",
-    "@neo4j/graphql": "^5.0.0"  
+    "graphql": "^16.7.1",
+    "neo4j-driver": "^5.10.0",
+    "redis": "^4.6.7"
   },
   "devDependencies": {
     "jest": "^29.5.0"
